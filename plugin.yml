@@ -1,0 +1,6 @@
+name: UpdateLogger
+author: TheDiamondYT
+description: A plugin to log stuff related to new MCPE updates.
+version: 1.0.0
+api: [3.0.0-ALPHA4, 3.0.0-ALPHA5]
+main: TheDiamondYT\UpdateLogger\Main
