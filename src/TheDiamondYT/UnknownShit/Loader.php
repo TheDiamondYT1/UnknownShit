@@ -1,15 +1,16 @@
 <?php
 
-namespace TheDiamondYT\UpdateLogger;
+namespace TheDiamondYT\UnknownShit;
 
 use pocketmine\plugin\PluginBase;
 use pocketmine\event\Listener;
 use pocketmine\event\server\DataPacketReceiveEvent;
 use pocketmine\network\mcpe\protocol\LoginPacket;
+use pocketmine\network\mcpe\protocol\PlayerActionPacket;
 use pocketmine\network\mcpe\protocol\ProtocolInfo;
 use pocketmine\utils\TextFormat as TF;
 
-class Main extends PluginBase implements Listener {
+class Loader extends PluginBase implements Listener {
 
     public function onEnable() {
         $this->getServer()->getPluginManager()->registerEvents($this, $this);
@@ -44,5 +45,15 @@ class Main extends PluginBase implements Listener {
                 $this->getLogger()->info(TF::AQUA . "$key => $value");
             }
         }
+        if($packet instanceof PlayerActionPacket) {
+			$knownActions = (new \ReflectionClass("\\pocketmine\\network\\mcpe\\protocol\\PlayerActionPacket"))->getConstants();
+			
+			foreach($knownActions as $name => $value) {
+				if($packet->action == $value) {
+					return;
+				}
+			}
+			$this->getLogger()->info(TF::GOLD . "Unknown player action: " . TF::WHITE . $packet->action);
+		}
     }
 }
